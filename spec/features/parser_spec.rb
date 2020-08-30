@@ -3,10 +3,11 @@
 require 'parser'
 
 RSpec.describe Parser do
-  let(:log_file) { File.read('./spec/support/example.log') }
+  let(:subject) { described_class }
+  let(:filepath) { './spec/support/example.log' }
 
   it 'outputs parsed and formatted logs' do
-    expect { subject.call(log_file) }.to output(
+    expect { subject.call(filepath) }.to output(
       <<~HEREDOC
         printing pages by magnitude of visits
         =========================================
@@ -19,7 +20,7 @@ RSpec.describe Parser do
         =========================================
         /example_page/1 3 unique views
         /example_page/2 2 unique views
-        /example_page/3 1 unique view
+        /example_page/3 1 unique views
         =========================================
         finished!
       HEREDOC
