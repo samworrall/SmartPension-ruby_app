@@ -2,8 +2,8 @@
 
 ## Brief:
 Write a script that receives a log file as an argument and returns the following:
-- A list of webpages with most page views ordered most to least.
-- A list of webpages with most uniquw page views also ordered most to least.
+- A list of webpages with total page views ordered most to least.
+- A list of webpages with unique page views also ordered most to least.
 
 ## Approach:
 I made sure that all my code was test driven, and followed key OOP principles; attempting to keep the code DRY where possible.
