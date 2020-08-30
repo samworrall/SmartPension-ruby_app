@@ -1,12 +1,16 @@
 # frozen_string_literal: true
 
-require 'log_counter'
-require 'log_orderer'
-require 'printer'
+require_relative './log_counter'
+require_relative './log_orderer'
+require_relative './printer'
 
 # Parser responsible for taking a log file and outputting parsed contents.
 class Parser
   def self.call(filepath)
+    return print 'a valid filepath is required as an argument to this script' if filepath.nil?
+    return print 'that file does not exist' unless File.exist?(filepath)
+    return print 'that file is empty' if File.zero?(filepath)
+
     log_counter = LogCounter.new
     printer = Printer.new
 
@@ -20,3 +24,5 @@ class Parser
     printer.print(ordered_unique_visits, unique: true)
   end
 end
+
+Parser.call(ARGV[0])
