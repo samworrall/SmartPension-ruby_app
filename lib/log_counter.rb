@@ -3,34 +3,36 @@
 # LogCounter responsible for aggregating logs and counting visits.
 class LogCounter
   def initialize
+    @unique_logs = []
     @total_page_visits = Hash.new(0)
     @total_unique_page_visits = Hash.new(0)
   end
 
-  attr_reader :total_page_visits, :total_unique_page_visits
+  attr_reader :total_page_visits, :total_unique_page_visits, :unique_logs
+  private :unique_logs
 
-  def aggregate_total_page_visits(filepath)
+  def aggregate_logs(filepath)
     File.open(filepath) do |file|
       file.readlines.each do |line|
-        page_name = line.split(' ')[0]
-        total_page_visits[page_name] += 1
+        aggregate_total_page_visits(line)
+        aggregate_total_unique_page_visits(line)
       end
     end
   end
 
-  def aggregate_total_unique_page_visits(filepath)
-    unique_logs = []
+  private
 
-    File.open(filepath) do |file|
-      file.readlines.each do |line|
+  def aggregate_total_page_visits(line)
+    page_name = line.split(' ')[0]
+    total_page_visits[page_name] += 1
+  end
 
-        if !unique_logs.include?(line.split(' '))
-          log = line.split(' ')
-          page_name = log[0]
-          total_unique_page_visits[page_name] += 1
-          unique_logs << log
-        end
-      end
-    end
+  def aggregate_total_unique_page_visits(line)
+    return if unique_logs.include?(line.split(' '))
+
+    log = line.split(' ')
+    page_name = log[0]
+    total_unique_page_visits[page_name] += 1
+    unique_logs << log
   end
 end
